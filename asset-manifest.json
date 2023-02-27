@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/birthday-calendar/static/css/main.c124b6f8.css",
-    "main.js": "/birthday-calendar/static/js/main.081b24fc.js",
+    "main.css": "/birthday-calendar/static/css/main.bf669969.css",
+    "main.js": "/birthday-calendar/static/js/main.d7231be6.js",
     "static/js/787.0aac403c.chunk.js": "/birthday-calendar/static/js/787.0aac403c.chunk.js",
     "index.html": "/birthday-calendar/index.html",
-    "main.c124b6f8.css.map": "/birthday-calendar/static/css/main.c124b6f8.css.map",
-    "main.081b24fc.js.map": "/birthday-calendar/static/js/main.081b24fc.js.map",
+    "main.bf669969.css.map": "/birthday-calendar/static/css/main.bf669969.css.map",
+    "main.d7231be6.js.map": "/birthday-calendar/static/js/main.d7231be6.js.map",
     "787.0aac403c.chunk.js.map": "/birthday-calendar/static/js/787.0aac403c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c124b6f8.css",
-    "static/js/main.081b24fc.js"
+    "static/css/main.bf669969.css",
+    "static/js/main.d7231be6.js"
   ]
 }
