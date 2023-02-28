@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import dayjs from 'dayjs';
+import { useState, useEffect } from "react";
+import dayjs, {Dayjs} from 'dayjs';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -13,21 +13,20 @@ library.add(solidStar, regularStar);
 
 interface Birthday {
   name: string;
-  date: string;
-  isFavourite: boolean;
 }
-
 
 function Calendar() {
 
     const [value, setValue] = useState(dayjs());
     const [birthdays, setBirthdays] = useState<Birthday[]>([]);
-
     const [favourites, setFavourites] = useState<string[]>([]);
 
-    //intialize birthday list with today's date
-    handleDateChange(dayjs());
+    //intialize birthday list with today's date on first render
+    useEffect(() => {
+        handleDateChange(dayjs());
+    }, []);
 
+    //called when the user selects the star icon to toggle the "favourite" state
     const handleFavouriteToggle = (personName: string) => {
         if (favourites.includes(personName)) {
             setFavourites(favourites.filter(name => name !== personName));
@@ -36,6 +35,7 @@ function Calendar() {
         }
     };
 
+    //solid star icon is used to represent a "favourited" birthday
     function getIcon(name: string) {
         if (favourites.includes(name)){
             return solidStar;
@@ -48,18 +48,20 @@ function Calendar() {
 
         const month = date.month() + 1; //month index starts at 0
         const day = date.date();
+
+        //clear list of birthdays when another date changes
+        setBirthdays([]);
         
         //retrieve a list of birthdays from this API then add the "text" field to an array
         fetch(`https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/${month}/${day}`)
           .then((response) =>  response.json())
           .then((data) => {
-            const birthdays = data.births.map((person: any) => {
+            let birthdays = data.births.map((person: any) => {
                 return {
                   name: person.text
                 };
               });
             setBirthdays(birthdays);
-
           })
           .catch((error) => {
             console.error(error);
@@ -73,9 +75,13 @@ function Calendar() {
                 displayStaticWrapperAs="desktop"
                 openTo="day"
                 value={value}
-                onChange={(newValue: any ) => {
-                    setValue(newValue);
-                    handleDateChange(newValue);
+                
+                onChange={(newValue: Dayjs | null) => {
+                    if(newValue){
+                        setValue(newValue);
+                        handleDateChange(newValue);
+                    }
+                    
                 }}
                 renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
             />
@@ -115,10 +121,6 @@ function Calendar() {
                 }
             </div>
 
-            
-
-
-            
         </LocalizationProvider>
             
         
