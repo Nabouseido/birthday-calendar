@@ -4,21 +4,34 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+library.add(solidStar, regularStar);
 
 
 interface Birthday {
   name: string;
   date: string;
-  isFavorite: boolean;
+  isFavourite: boolean;
 }
 
 
 function Calendar() {
 
     const [value, setValue] = useState(dayjs());
-
-    //const [birthdays, setBirthdays] = React.useState([]);
     const [birthdays, setBirthdays] = useState<Birthday[]>([]);
+
+    const [favourites, setFavourites] = useState<string[]>([]);
+
+    const handleFavouriteToggle = (personName: string) => {
+        if (favourites.includes(personName)) {
+            setFavourites(favourites.filter(name => name !== personName));
+        } else {
+            setFavourites([...favourites, personName]);
+        }
+    };
 
  
     function handleDateChange(date: dayjs.Dayjs): void {
@@ -32,8 +45,7 @@ function Calendar() {
           .then((data) => {
             const birthdays = data.births.map((person: any) => {
                 return {
-                  name: person.text,
-                  date: `${person.year}-${month}-${day}`
+                  name: person.text
                 };
               });
             setBirthdays(birthdays);
@@ -43,30 +55,38 @@ function Calendar() {
             console.error(error);
           });
     }
-    
+
+    function getIcon(name: string) {
+        if (favourites.includes(name)){
+            return solidStar;
+        }
+        else return regularStar;
+    }
 
     return (
-        <span className="Birthday-Calendar">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
-            displayStaticWrapperAs="desktop"
-            openTo="day"
-            value={value}
-            onChange={(newValue: any ) => {
-                setValue(newValue);
-                handleDateChange(newValue);
-            }}
-            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
+                displayStaticWrapperAs="desktop"
+                openTo="day"
+                value={value}
+                onChange={(newValue: any ) => {
+                    setValue(newValue);
+                    handleDateChange(newValue);
+                }}
+                renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
             />
 
             <div>
+
                 {birthdays.length > 0 &&
                 <div>
-                    <ul>
+                    <ul className="fa-ul">
                         {birthdays.map((birthday, index) => (
                         <li key={index}>
-                            <span>{birthday.name}</span>
-                            {/* <button onClick={() => toggleFavorite(index)}>Favorite</button> */}
+                            <span className="fa-li">
+                            <FontAwesomeIcon icon={getIcon(birthday.name)} onClick={() => handleFavouriteToggle(birthday.name)}/>
+                            </span>
+                            {birthday.name}
                         </li>
                         ))}
                     </ul>
@@ -75,7 +95,6 @@ function Calendar() {
             </div>
             
         </LocalizationProvider>
-        </span>
             
         
     );
