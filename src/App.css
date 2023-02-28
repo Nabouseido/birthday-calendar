@@ -6,7 +6,8 @@
 }
 
 .Calendar {
-  display: flex;
+  display: flex; 
+  flex-direction: column;
   align-content: left;
   margin-left: 2%;
 }

@@ -25,6 +25,9 @@ function Calendar() {
 
     const [favourites, setFavourites] = useState<string[]>([]);
 
+    //intialize birthday list with today's date
+    handleDateChange(dayjs());
+
     const handleFavouriteToggle = (personName: string) => {
         if (favourites.includes(personName)) {
             setFavourites(favourites.filter(name => name !== personName));
@@ -33,7 +36,14 @@ function Calendar() {
         }
     };
 
- 
+    function getIcon(name: string) {
+        if (favourites.includes(name)){
+            return solidStar;
+        }
+        else return regularStar;
+    }
+
+
     function handleDateChange(date: dayjs.Dayjs): void {
 
         const month = date.month() + 1; //month index starts at 0
@@ -56,12 +66,6 @@ function Calendar() {
           });
     }
 
-    function getIcon(name: string) {
-        if (favourites.includes(name)){
-            return solidStar;
-        }
-        else return regularStar;
-    }
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -75,11 +79,28 @@ function Calendar() {
                 }}
                 renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
             />
+            <div>
+                {favourites.length > 0 &&
+                <div>
+                    <h4>Favourite Birthdays:</h4>
+                    <ul className="fa-ul">
+                        {favourites.map((favourite, index) => (
+                        <li key={index}>
+                            <span className="fa-li">
+                            <FontAwesomeIcon icon={getIcon(favourite)} onClick={() => handleFavouriteToggle(favourite)}/>
+                            </span>
+                            {favourite}
+                        </li>
+                        ))}
+                    </ul>
+                </div>
+                }
+            </div>
 
             <div>
-
                 {birthdays.length > 0 &&
                 <div>
+                    <h4> Famous birthdays on this date:</h4>
                     <ul className="fa-ul">
                         {birthdays.map((birthday, index) => (
                         <li key={index}>
@@ -93,6 +114,10 @@ function Calendar() {
                 </div>
                 }
             </div>
+
+            
+
+
             
         </LocalizationProvider>
             
