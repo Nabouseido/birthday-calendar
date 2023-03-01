@@ -44,6 +44,13 @@ function Calendar() {
         }
         else return regularStar;
     }
+    //helper function for testing icons
+    function getIconString(birthday: Birthday){
+        if (favourites.includes(birthday)){
+            return "solid-star"
+        }
+        else return "regular-star";
+    }
 
     function handleDateChange(date: dayjs.Dayjs): void {
 
@@ -98,7 +105,7 @@ function Calendar() {
                         {favourites.map((favourite, index) => (
                         <li key={index}>
                             <span className="fa-li">
-                            <FontAwesomeIcon icon={getIcon(favourite)} onClick={() => handleFavouriteToggle(favourite)}/>
+                            <FontAwesomeIcon icon={getIcon(favourite)} data-testid={getIconString(favourite)} onClick={() => handleFavouriteToggle(favourite)}/>
                             </span>
                             {favourite.name} ({favourite.date.format('MMMM D')})
                         </li>
@@ -111,12 +118,12 @@ function Calendar() {
             <div>
                 {birthdays.length > 0 &&
                 <div>
-                    <h4> Famous birthdays on this date:</h4>
+                    <h4>Famous birthdays on this date:</h4>
                     <ul className="fa-ul">
                         {birthdays.map((birthday, index) => (
                         <li key={index}>
                             <span className="fa-li">
-                            <FontAwesomeIcon icon={getIcon(birthday)} onClick={() => handleFavouriteToggle(birthday)}/>
+                            <FontAwesomeIcon icon={getIcon(birthday)} data-testid={getIconString(birthday)} onClick={() => handleFavouriteToggle(birthday)}/>
                             </span>
                             {birthday.name}
                         </li>
