@@ -10,6 +10,6 @@ Implementation notes:
 -> Build your app using React and TypeScript
 -> Use the following calendar component for your app: https://mui.com/x/react-date-
 pickers/date-picker/
-->Use the following API to get birthdays for a particular day:
+-> Use the following API to get birthdays for a particular day:
 https://api.wikimedia.org/wiki/API_reference/Feed/On_this_day
 -> Unit tests for your component(s)
